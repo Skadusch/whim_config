@@ -213,6 +213,7 @@ void DoConfig(IContext context)
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_6", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_9));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_7", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_0));
 
+    // TreeLayout Keybinds
     context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_left", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_H));
     context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_down", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_J));
     context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_up", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_K));
