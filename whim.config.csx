@@ -11,8 +11,8 @@
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.TreeLayout.Bar\Whim.TreeLayout.Bar.dll"
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.TreeLayout.CommandPalette\Whim.TreeLayout.CommandPalette.dll"
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.Updater\Whim.Updater.dll"
-
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
@@ -34,17 +34,16 @@ using Windows.Win32.UI.Input.KeyboardAndMouse;
 
 void DoConfig(IContext context)
 {
-    // string file = context.FileManager.GetWhimFileDir("resources.xaml");
-    // context.ResourceManager.AddUserDictionary(file);
+    /* string file = context.FileManager.GetWhimFileDir("resources.xaml");
+    context.ResourceManager.AddUserDictionary(file); */
 
     context.Logger.Config = new LoggerConfig();
-
     // Bar plugin.
     List<BarComponent> leftComponents = new() { WorkspaceWidget.CreateComponent() };
     List<BarComponent> centerComponents = new() { FocusedWindowWidget.CreateComponent() };
     List<BarComponent> rightComponents = new() { 
         DateTimeWidget.CreateComponent(),
-        ActiveLayoutWidget.CreateComponent(),
+            ActiveLayoutWidget.CreateComponent(),
     };
 
     BarConfig barConfig = new(leftComponents, centerComponents, rightComponents);
@@ -60,10 +59,10 @@ void DoConfig(IContext context)
        FloatingLayoutPlugin floatingLayoutPlugin = new(context);
        context.PluginManager.AddPlugin(floatingLayoutPlugin); */
 
-    // Focus indicator.
-    /* FocusIndicatorConfig focusIndicatorConfig = new() { Color = new SolidColorBrush(Colors.Red), FadeEnabled = true };
-       FocusIndicatorPlugin focusIndicatorPlugin = new(context, focusIndicatorConfig);
-       context.PluginManager.AddPlugin(focusIndicatorPlugin); */
+    /* // Focus indicator.
+    FocusIndicatorConfig focusIndicatorConfig = new() { Color = new SolidColorBrush(Colors.Gray), FadeEnabled = true };
+    FocusIndicatorPlugin focusIndicatorPlugin = new(context, focusIndicatorConfig);
+    context.PluginManager.AddPlugin(focusIndicatorPlugin);*/
 
     // Command palette.
     CommandPaletteConfig commandPaletteConfig = new(context);
@@ -97,15 +96,31 @@ void DoConfig(IContext context)
     UpdaterPlugin updaterPlugin = new(context, updaterConfig);
     context.PluginManager.AddPlugin(updaterPlugin);
 
+    // Original Config Set up workspaces.
+    /* context.WorkspaceManager.Add("1");
+       context.WorkspaceManager.Add("2");
+       context.WorkspaceManager.Add("3");
+       context.WorkspaceManager.Add("4");
+
+    // Set up layout engines.
+    context.WorkspaceManager.CreateLayoutEngines = () =>
+    new CreateLeafLayoutEngine[]
+    {
+    (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
+    (id) => SliceLayouts.CreatePrimaryStackLayout(context, sliceLayoutPlugin, id),
+    (id) => SliceLayouts.CreateSecondaryPrimaryLayout(context, sliceLayoutPlugin, id),
+    (id) => new FocusLayoutEngine(id),
+    (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id)
+    }; */
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //Own Config workspaces
+    //Config workspaces
     context.WorkspaceManager.Add("Main"); 
     context.WorkspaceManager.Add("Browser",
             new CreateLeafLayoutEngine[]
             {
             (id) => new FocusLayoutEngine(id)
             }); 
-    // Workspace mit TreeLayoutEngine
     context.WorkspaceManager.Add(
             "Utils",
             new CreateLeafLayoutEngine[]
@@ -138,11 +153,9 @@ void DoConfig(IContext context)
         (id) => new FocusLayoutEngine(id),
     };
 
-    // Routen für App in workspaces
-
-    context.RouterManager.AddProcessFileNameRoute("ubuntu.exe", "Main");
-    context.RouterManager.AddProcessFileNameRoute("cmd.exe", "Main");
-    context.RouterManager.AddProcessFileNameRoute("pwsh.exe", "Main");
+    // Workspace RouterManager
+    context.RouterManager.AddTitleMatchRoute("PowerShell", "Main");
+    context.RouterManager.AddTitleMatchRoute("Ubuntu", "Main");
 
     context.RouterManager.AddProcessFileNameRoute("firefox.exe", "Browser");
 
@@ -150,7 +163,7 @@ void DoConfig(IContext context)
     context.RouterManager.AddProcessFileNameRoute("notepad.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("notepad++.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("WinSCP.exe", "Utils");
-    context.RouterManager.AddProcessFileNameRoute("oodipro.exe", "Utils");
+    context.RouterManager.AddProcessFileNameRoute("nvim-qt.exe", "Utils");
 
     context.RouterManager.AddProcessFileNameRoute("Steam.exe", "Launcher");
     context.RouterManager.AddProcessFileNameRoute("Battle.net Launcher.exe", "Launcher");
@@ -171,23 +184,27 @@ void DoConfig(IContext context)
 
     // Keybinds
 
+    KeyModifiers ShiftCtrl = KeyModifiers.LShift | KeyModifiers.LControl; 
 
-    context.KeybindManager.SetKeybind("whim.core.restart_whim", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_R));
-    context.KeybindManager.SetKeybind("whim.core.exit_whim", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_Q));
+    context.KeybindManager.SetKeybind("whim.core.exit_whim", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_Q));
+    context.KeybindManager.SetKeybind("whim.core.restart_whim", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_R));
+
+    // cycle layout engine
     context.KeybindManager.SetKeybind("whim.core.cycle_layout_engine.next", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_SPACE));
+    // promote and demote a window
+    context.KeybindManager.SetKeybind("whim.slice_layout.window.promote", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_P));
+    context.KeybindManager.SetKeybind("whim.slice_layout.window.demote", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_D));
 
+    // Move Window to Workspace
     context.KeybindManager.SetKeybind("whim.command_palette.move_window_to_workspace", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_M));
 
     // Vim like window movement
-    KeyModifiers ShiftCtrl = KeyModifiers.LShift | KeyModifiers.LControl; 
-
     context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.left", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_H));
     context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.down", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_J));
     context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.up", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_K));
     context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.right", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_L));
 
-    // Workspace Navigation mit Alt+Zahl
-
+    // Workspace Navigation mit Alt+number
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_1", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_1));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_2", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_2));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_3", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_3));
@@ -201,24 +218,16 @@ void DoConfig(IContext context)
     context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_up", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_K));
     context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_right", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_L));
 
-    // Original Config Set up workspaces.
-    /* context.WorkspaceManager.Add("1");
-       context.WorkspaceManager.Add("2");
-       context.WorkspaceManager.Add("3");
-       context.WorkspaceManager.Add("4");
+    // Create the command.
+    context.CommandManager.Add(
+            // Automatically namespaced to `whim.custom`.
+            identifier: "close_window",
+            title: "Close focused window",
+            callback: () => context.WorkspaceManager.ActiveWorkspace.LastFocusedWindow.Close()
+            );
 
-    // Set up layout engines.
-    context.WorkspaceManager.CreateLayoutEngines = () =>
-    new CreateLeafLayoutEngine[]
-    {
-    (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
-    (id) => SliceLayouts.CreatePrimaryStackLayout(context, sliceLayoutPlugin, id),
-    (id) => SliceLayouts.CreateSecondaryPrimaryLayout(context, sliceLayoutPlugin, id),
-    (id) => new FocusLayoutEngine(id),
-    (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id)
-    }; */
-
+    // Create an associated keybind.
+    context.KeybindManager.SetKeybind("whim.custom.close_window", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_D));
 }
-
 // We return doConfig here so that Whim can call it when it loads.
 return DoConfig;
