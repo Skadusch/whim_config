@@ -52,9 +52,9 @@ void DoConfig(IContext context)
     context.PluginManager.AddPlugin(barPlugin);
 
     // Gap plugin.
-    /* GapsConfig gapsConfig = new() { OuterGap = 0, InnerGap = 10 };
-       GapsPlugin gapsPlugin = new(context, gapsConfig);
-       context.PluginManager.AddPlugin(gapsPlugin); */
+    GapsConfig gapsConfig = new() { OuterGap = 5, InnerGap = 8 };
+    GapsPlugin gapsPlugin = new(context, gapsConfig);
+    context.PluginManager.AddPlugin(gapsPlugin);
 
     /* // Floating window plugin.
        FloatingLayoutPlugin floatingLayoutPlugin = new(context);
@@ -99,31 +99,20 @@ void DoConfig(IContext context)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //Own Config workspaces
-    context.WorkspaceManager.Add(
-            "Main",
+    context.WorkspaceManager.Add("Main"); 
+    context.WorkspaceManager.Add("Browser",
             new CreateLeafLayoutEngine[]
             {
-            (id) => new FocusLayoutEngine(id),
-            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
-            (id) => new SliceLayoutEngine(
-                    context,
-                    sliceLayoutPlugin,
-                    id,
-                    new ParentArea(
-                        isRow: true,
-                        (0.5, new OverflowArea()),
-                        (0.5, new SliceArea(order: 0, maxChildren: 2))
-                        )
-                    ) { Name = "Overflow" }
-            }
-            ); 
-    context.WorkspaceManager.Add("Browser"); 
+            (id) => new FocusLayoutEngine(id)
+            }); 
     // Workspace mit TreeLayoutEngine
     context.WorkspaceManager.Add(
             "Utils",
             new CreateLeafLayoutEngine[]
             {
-            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id)
+            (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
+            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
+            (id) => new FocusLayoutEngine(id)
             }); 
     context.WorkspaceManager.Add(
             "Launcher",
@@ -145,8 +134,8 @@ void DoConfig(IContext context)
     //
     context.WorkspaceManager.CreateLayoutEngines = () => new CreateLeafLayoutEngine[]
     {
+        (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
         (id) => new FocusLayoutEngine(id),
-        (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0)
     };
 
     // Routen für App in workspaces
@@ -183,7 +172,8 @@ void DoConfig(IContext context)
     // Keybinds
 
 
-    context.KeybindManager.SetKeybind("whim.core.restart_whim", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_Q));
+    context.KeybindManager.SetKeybind("whim.core.restart_whim", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_R));
+    context.KeybindManager.SetKeybind("whim.core.exit_whim", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_Q));
     context.KeybindManager.SetKeybind("whim.core.cycle_layout_engine.next", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_SPACE));
 
     context.KeybindManager.SetKeybind("whim.command_palette.move_window_to_workspace", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_M));
@@ -191,13 +181,13 @@ void DoConfig(IContext context)
     // Vim like window movement
     KeyModifiers ShiftCtrl = KeyModifiers.LShift | KeyModifiers.LControl; 
 
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.left", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_H));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.down", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_J));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.up", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_K));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.right", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_L));
+    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.left", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_H));
+    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.down", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_J));
+    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.up", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_K));
+    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.right", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_L));
 
-    // Workspace Navigation mit Alt+int
-    // context.KeybindManager.SetKeybind("whim.core.activate_workspace_1", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_1));
+    // Workspace Navigation mit Alt+Zahl
+
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_1", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_1));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_2", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_2));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_3", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_3));
@@ -206,10 +196,10 @@ void DoConfig(IContext context)
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_6", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_9));
     context.KeybindManager.SetKeybind("whim.core.activate_workspace_7", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_0));
 
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_left", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_H));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_down", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_J));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_up", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_K));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_right", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_L));
+    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_left", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_H));
+    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_down", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_J));
+    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_up", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_K));
+    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_right", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_L));
 
     // Original Config Set up workspaces.
     /* context.WorkspaceManager.Add("1");
