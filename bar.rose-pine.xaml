@@ -7,7 +7,7 @@
     </Style>
 
     <!--  Font family  -->
-    <FontFamily x:Key="_font:family">Segoe UI Variable Small</FontFamily>
+    <FontFamily x:Key="_font:family">FiraMono Nerd Font</FontFamily>
 
     <!--  Colors  -->
     <Color x:Key="_base:background">#191725</Color> <!-- bar background -->
