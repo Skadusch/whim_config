@@ -4,6 +4,8 @@
 
 Whim the hackable, pluggable and scriptable dynamic window manager for Windows 10 and 11.
 
+![Overlay](img\Screenshot-Whim.png)
+
 ##### Theme: Rose-Pine
 
 My attempt to style whim in the [rose-pine](https://rosepinetheme.com/) theme.
