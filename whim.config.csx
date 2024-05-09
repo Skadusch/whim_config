@@ -39,9 +39,8 @@ void DoConfig(IContext context)
     context.Logger.Config = new LoggerConfig();
     // Bar plugin.
     List<BarComponent> leftComponents = new() { WorkspaceWidget.CreateComponent() };
-    List<BarComponent> centerComponents = new() { FocusedWindowWidget.CreateComponent() };
+    List<BarComponent> centerComponents = new() { DateTimeWidget.CreateComponent() };
     List<BarComponent> rightComponents = new() {
-        DateTimeWidget.CreateComponent(),
             ActiveLayoutWidget.CreateComponent()
     };
 
