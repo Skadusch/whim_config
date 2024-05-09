@@ -11,6 +11,7 @@
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.TreeLayout.Bar\Whim.TreeLayout.Bar.dll"
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.TreeLayout.CommandPalette\Whim.TreeLayout.CommandPalette.dll"
 #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.Updater\Whim.Updater.dll"
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -34,16 +35,14 @@ using Windows.Win32.UI.Input.KeyboardAndMouse;
 
 void DoConfig(IContext context)
 {
-    /* string file = context.FileManager.GetWhimFileDir("resources.xaml");
-    context.ResourceManager.AddUserDictionary(file); */
 
     context.Logger.Config = new LoggerConfig();
     // Bar plugin.
     List<BarComponent> leftComponents = new() { WorkspaceWidget.CreateComponent() };
     List<BarComponent> centerComponents = new() { FocusedWindowWidget.CreateComponent() };
-    List<BarComponent> rightComponents = new() { 
+    List<BarComponent> rightComponents = new() {
         DateTimeWidget.CreateComponent(),
-            ActiveLayoutWidget.CreateComponent(),
+            ActiveLayoutWidget.CreateComponent()
     };
 
     BarConfig barConfig = new(leftComponents, centerComponents, rightComponents);
@@ -59,10 +58,14 @@ void DoConfig(IContext context)
        FloatingLayoutPlugin floatingLayoutPlugin = new(context);
        context.PluginManager.AddPlugin(floatingLayoutPlugin); */
 
-    /* // Focus indicator.
-    FocusIndicatorConfig focusIndicatorConfig = new() { Color = new SolidColorBrush(Colors.Gray), FadeEnabled = true };
-    FocusIndicatorPlugin focusIndicatorPlugin = new(context, focusIndicatorConfig);
-    context.PluginManager.AddPlugin(focusIndicatorPlugin);*/
+    // Focus indicator.
+    // Border width of focused window
+    // int borderSize = 4;
+
+    // Brush borderBrush = new SolidColorBrush(ColorHelper.FromArgb(255, 235, 111, 146));
+    // FocusIndicatorConfig focusIndicatorConfig = new() { Color = borderBrush, FadeEnabled = true,  BorderSize = borderSize };
+    // FocusIndicatorPlugin focusIndicatorPlugin = new(context, focusIndicatorConfig);
+    // context.PluginManager.AddPlugin(focusIndicatorPlugin);
 
     // Command palette.
     CommandPaletteConfig commandPaletteConfig = new(context);
@@ -114,68 +117,87 @@ void DoConfig(IContext context)
     }; */
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    string file = context.FileManager.GetWhimFileDir("bar.rose-pine.xaml");
+    context.ResourceManager.AddUserDictionary(file);
+
     //Config workspaces
-    context.WorkspaceManager.Add("Main"); 
-    context.WorkspaceManager.Add("Browser",
+    context.WorkspaceManager.Add("\udb80\udedc");
+
+    context.WorkspaceManager.Add(
+            "\ueaae",
             new CreateLeafLayoutEngine[]
             {
-            (id) => new FocusLayoutEngine(id)
-            }); 
+                (id) => new FocusLayoutEngine(id),
+                (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0)
+            });
     context.WorkspaceManager.Add(
             "Utils",
             new CreateLeafLayoutEngine[]
             {
-            (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
-            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
-            (id) => new FocusLayoutEngine(id)
-            }); 
+                (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
+                (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
+                (id) => new FocusLayoutEngine(id)
+            });
     context.WorkspaceManager.Add(
             "Launcher",
             new CreateLeafLayoutEngine[]
             {
-            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id)
+                (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id)
             });
     context.WorkspaceManager.Add(
             "Misc",
             new CreateLeafLayoutEngine[]
             {
-            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
-            (id) => new FocusLayoutEngine(id)
+                (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
+                (id) => new FocusLayoutEngine(id)
             });
     context.WorkspaceManager.Add("Discord");
     context.WorkspaceManager.Add("Private");
 
     // Default LayoutEngine
     //
-    context.WorkspaceManager.CreateLayoutEngines = () => new CreateLeafLayoutEngine[]
-    {
-        (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
-        (id) => new FocusLayoutEngine(id),
-    };
+    context.WorkspaceManager.CreateLayoutEngines = () => new CreateLeafLayoutEngine[] {
+            (id) => new TreeLayoutEngine(context, treeLayoutPlugin, id),
+            (id) => SliceLayouts.CreateMultiColumnLayout(context, sliceLayoutPlugin, id, 1, 2, 0),
+            (id) => new FocusLayoutEngine(id),
+        };
 
     // Workspace RouterManager
-    context.RouterManager.AddTitleMatchRoute("PowerShell", "Main");
-    context.RouterManager.AddTitleMatchRoute("Ubuntu", "Main");
+    context.RouterManager.AddTitleMatchRoute("PowerShell", "\udb80\udedc");
+    context.RouterManager.AddTitleMatchRoute("Ubuntu", "\udb80\udedc");
 
-    context.RouterManager.AddProcessFileNameRoute("firefox.exe", "Browser");
+    context.RouterManager.AddProcessFileNameRoute("firefox.exe", "\ueaae");
 
     context.RouterManager.AddProcessFileNameRoute("explorer.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("notepad.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("notepad++.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("WinSCP.exe", "Utils");
     context.RouterManager.AddProcessFileNameRoute("nvim-qt.exe", "Utils");
+    context.RouterManager.AddTitleMatchRoute("Einstellungen", "Utils");
 
     context.RouterManager.AddProcessFileNameRoute("Steam.exe", "Launcher");
     context.RouterManager.AddProcessFileNameRoute("Battle.net Launcher.exe", "Launcher");
     context.RouterManager.AddTitleMatchRoute("Battle.net", "Launcher");
     context.RouterManager.AddTitleRoute("Steam", "Launcher");
 
+    context.RouterManager.AddProcessFileNameRoute("OUTLOOK.EXE", "Misc");
     context.RouterManager.AddProcessFileNameRoute("Discord.exe", "Discord");
 
     context.RouterManager.AddProcessFileNameRoute("Obsidian.exe", "Private");
-    context.RouterManager.AddProcessFileNameRoute("Mullvad VPN.exe", "Private");
+    context.RouterManager.AddProcessFileNameRoute("KeePassXC.exe", "Private");
+    context.RouterManager.AddProcessFileNameRoute("Spotify.exe", "Private");
 
     // Filter
+
+    // https://github.com/urob/whim-config/blob/main/whim.config.csx#L254
+    // Custom filters (aka ignored windows)
+    context.FilterManager.AddTitleMatchFilter(".*[s|S]etup.*");
+    context.FilterManager.AddTitleMatchFilter(".*[i|I]nstaller.*");
+    context.FilterManager.Add((window) => window.WindowClass.StartsWith("WindowsForms10.Window.20008.app"));  // preview window of explorer on Windows10
+
+    // Own Filters
+    context.FilterManager.AddTitleMatchFilter("Erweiterung: *"); // firefox TreeStyle Tabs
 
     context.FilterManager.AddTitleFilter("Overwatch");
     context.FilterManager.AddTitleFilter("Enshrouded");
@@ -184,41 +206,57 @@ void DoConfig(IContext context)
 
     // Keybinds
 
-    KeyModifiers ShiftCtrl = KeyModifiers.LShift | KeyModifiers.LControl; 
+    // https://github.com/urob/whim-config/blob/main/whim.config.csx#L189
+    KeyModifiers Alt = KeyModifiers.LAlt;
+    KeyModifiers Ctrl = KeyModifiers.LControl;
+    KeyModifiers ShiftAlt = KeyModifiers.LAlt | KeyModifiers.LShift;
+    KeyModifiers ShiftCtrl = KeyModifiers.LShift | KeyModifiers.LControl;
 
-    context.KeybindManager.SetKeybind("whim.core.exit_whim", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_Q));
-    context.KeybindManager.SetKeybind("whim.core.restart_whim", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_R));
+    void Bind(KeyModifiers mod, string key, string cmd)
+    {
+        VIRTUAL_KEY vk = (VIRTUAL_KEY)Enum.Parse(typeof(VIRTUAL_KEY), "VK_" + key);
+        context.KeybindManager.SetKeybind(cmd, new Keybind(mod, vk));
+    }
+    
+    Bind(Ctrl, "P", "whim.command_palette.toggle");
+
+    Bind(ShiftCtrl, "Q", "whim.core.exit_whim");
+    Bind(ShiftCtrl, "R", "whim.core.restart_whim");
 
     // cycle layout engine
-    context.KeybindManager.SetKeybind("whim.core.cycle_layout_engine.next", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_SPACE));
+    Bind(Alt, "SPACE", "whim.core.cycle_layout_engine.next");
     // promote and demote a window
-    context.KeybindManager.SetKeybind("whim.slice_layout.window.promote", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_P));
-    context.KeybindManager.SetKeybind("whim.slice_layout.window.demote", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_D));
+    Bind(Alt, "P", "whim.slice_layout.window.promote");
 
     // Move Window to Workspace
-    context.KeybindManager.SetKeybind("whim.command_palette.move_window_to_workspace", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_M));
+    Bind(Alt, "M", "whim.command_palette.move_window_to_workspace");
 
     // Vim like window movement
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.left", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_H));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.down", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_J));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.up", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_K));
-    context.KeybindManager.SetKeybind("whim.core.focus_window_in_direction.right", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_L));
+    Bind(Alt, "H", "whim.core.focus_window_in_direction.left");
+    Bind(Alt, "J", "whim.core.focus_window_in_direction.down");
+    Bind(Alt, "K", "whim.core.focus_window_in_direction.up");
+    Bind(Alt, "L", "whim.core.focus_window_in_direction.right");
 
     // Workspace Navigation mit Alt+number
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_1", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_1));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_2", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_2));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_3", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_3));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_4", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_4));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_5", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_8));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_6", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_9));
-    context.KeybindManager.SetKeybind("whim.core.activate_workspace_7", new Keybind(KeyModifiers.LAlt, VIRTUAL_KEY.VK_0));
+    Bind(Alt, "1", "whim.core.activate_workspace_1");
+    Bind(Alt, "2", "whim.core.activate_workspace_2");
+    Bind(Alt, "3", "whim.core.activate_workspace_3");
+    Bind(Alt, "4", "whim.core.activate_workspace_4");
+    Bind(Alt, "8", "whim.core.activate_workspace_5");
+    Bind(Alt, "9", "whim.core.activate_workspace_6");
+    Bind(Alt, "0", "whim.core.activate_workspace_7");
 
     // TreeLayout Keybinds
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_left", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_H));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_down", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_J));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_up", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_K));
-    context.KeybindManager.SetKeybind("whim.tree_layout.add_tree_direction_right", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_L));
+    //
+    // add window in direction
+    Bind(ShiftCtrl, "H", "whim.tree_layout.add_tree_direction_left");
+    Bind(ShiftCtrl, "J", "whim.tree_layout.add_tree_direction_down");
+    Bind(ShiftCtrl, "K", "whim.tree_layout.add_tree_direction_up");
+    Bind(ShiftCtrl, "L", "whim.tree_layout.add_tree_direction_right");
 
+    // swap window in direction
+    //
+    //
     // Create the command.
     context.CommandManager.Add(
             // Automatically namespaced to `whim.custom`.
@@ -226,9 +264,13 @@ void DoConfig(IContext context)
             title: "Close focused window",
             callback: () => context.WorkspaceManager.ActiveWorkspace.LastFocusedWindow.Close()
             );
-
-    // Create an associated keybind.
-    context.KeybindManager.SetKeybind("whim.custom.close_window", new Keybind(ShiftCtrl, VIRTUAL_KEY.VK_D));
+    Bind(ShiftCtrl, "D", "whim.custom.close_window");
 }
 // We return doConfig here so that Whim can call it when it loads.
 return DoConfig;
+
+
+
+
+
+
