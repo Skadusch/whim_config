@@ -13,18 +13,17 @@
 // #r "C:\Users\Slash\AppData\Local\Programs\Whim\plugins\Whim.Updater\Whim.Updater.dll"
 
 #r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.Bar.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.CommandPalette.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.FloatingLayout.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.FocusIndicator.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.Gaps.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.LayoutPreview.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.SliceLayout.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.TreeLayout.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.TreeLayout.Bar.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.TreeLayout.CommandPalette.dll"
-#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\Whim.Updater.dll"
-
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.Bar\Whim.Bar.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.CommandPalette\Whim.CommandPalette.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.FloatingLayout\Whim.FloatingLayout.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.FocusIndicator\Whim.FocusIndicator.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.Gaps\Whim.Gaps.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.LayoutPreview\Whim.LayoutPreview.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.SliceLayout\Whim.SliceLayout.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.TreeLayout\Whim.TreeLayout.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.TreeLayout.Bar\Whim.TreeLayout.Bar.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.TreeLayout.CommandPalette\Whim.TreeLayout.CommandPalette.dll"
+#r "D:\Whim\src\Whim.Runner\bin\x64\Debug\net7.0-windows10.0.19041.0\plugins\Whim.Updater\Whim.Updater.dll"
 
 using System;
 using System.Linq;
@@ -44,6 +43,7 @@ using Whim.TreeLayout.Bar;
 using Whim.TreeLayout.CommandPalette;
 using Whim.Updater;
 using Windows.Win32.UI.Input.KeyboardAndMouse;
+
 
 // Mal noch die Comments entfernen?
 
