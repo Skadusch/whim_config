@@ -4,7 +4,7 @@
 
 Whim the hackable, pluggable and scriptable dynamic window manager for Windows 10 and 11.
 
-![Overlay](https://github.com/Skadusch/whim_config/blob/main/img/Screenshot-Whim.png)
+![Overlay](https://github.com/Skadusch/whim_config/blob/main/img/Screenshot.png)
 
 #### Theme: Rose-Pine
 
