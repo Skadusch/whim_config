@@ -6,7 +6,7 @@ Whim the hackable, pluggable and scriptable dynamic window manager for Windows 1
 
 ![Overlay](https://github.com/Skadusch/whim_config/blob/main/img/Screenshot-Whim.png)
 
-##### Theme: Rose-Pine
+#### Theme: Rose-Pine
 
 My attempt to style whim in the [rose-pine](https://rosepinetheme.com/) theme.
 
