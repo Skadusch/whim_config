@@ -6,7 +6,9 @@ Whim the hackable, pluggable and scriptable dynamic window manager for Windows 1
 
 ![Overlay](https://github.com/Skadusch/whim_config/blob/main/img/Screenshot.png)
 
-## Keybinds
+## Custom Keybinds
+
+On top of [Defaults](https://dalyisaac.github.io/Whim/docs/customize/commands.html).
 
 | Description                                                                                                           | Keybind            |
 | --------------------------------------------------------------------------------------------------------------------- | ------------------ |
@@ -29,7 +31,7 @@ Whim the hackable, pluggable and scriptable dynamic window manager for Windows 1
 | Restart Whim                                                                                                          | `Shift + Ctrl` + R |
 | Quit Whim                                                                                                             | `Shift + Ctrl` + Q |
 
-#### Theme: Rose-Pine
+### Theme: Rose-Pine
 
 My attempt to style whim in the [rose-pine](https://rosepinetheme.com/) theme.
 
