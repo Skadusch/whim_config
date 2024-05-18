@@ -231,7 +231,7 @@ void DoConfig(IContext context)
         context.KeybindManager.SetKeybind(cmd, new Keybind(mod, vk));
     }
     
-    Bind(Ctrl, "P", "whim.command_palette.toggle");
+    Bind(ShiftCtrl, "P", "whim.command_palette.toggle");
 
     Bind(ShiftCtrl, "Q", "whim.core.exit_whim");
     Bind(ShiftCtrl, "R", "whim.core.restart_whim");

@@ -12,7 +12,7 @@ On top of [Defaults](https://dalyisaac.github.io/Whim/docs/customize/commands.ht
 
 | Description                                                                                                           | Keybind            |
 | --------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| Toggle command palette                                                                                                | `Strg` + P         |
+| Toggle command palette                                                                                                | `Shift + Ctrl` + P |
 | Move window to workspace                                                                                              | `Alt` + M          |
 | Activate workspace (where idx is an int 1, 2, ...9, 0)<br>Defaults: 1-7 (Key 1-4 to Workspace 1-4 and Key 8-0 to 5-7) | `Alt` + {idx}      |
 | Cycle Layout Engine                                                                                                   | `Alt` + SPACE      |
