@@ -24,14 +24,14 @@
     <Style x:Key="_base:text_block" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource _base:foreground}" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="8,2,8,3" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="8,3,8,3" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="{StaticResource _font:family}" />
     </Style>
 
     <!--  Shared button style  -->
     <Style x:Key="_base:button" TargetType="Button">
-        <Setter Property="Padding" Value="8,2,8,3" />
+        <Setter Property="Padding" Value="8,3,8,3" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="2" />
         <Setter Property="FontSize" Value="14" />
@@ -43,8 +43,8 @@
         <Setter Property="Background" Value="{StaticResource _base:background}" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="2,0" />
-        <!-- <Setter Property="BorderThickness" Value="0,0,0,1" /> -->
-        <!-- <Setter Property="BorderBrush" Value="#434345" /> -->
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderBrush" Value="#ebbcba" />
     </Style>
 
     <!--  Sub panels  -->
